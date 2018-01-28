@@ -1,0 +1,22 @@
+{
+    "extends": "airbnb-base",
+    "plugins": [
+        "import"
+    ],
+    "env": {
+        "browser": true,
+        "jquery": true
+    },
+    "rules": {
+        "indent": [2, 4, {"SwitchCase": 1}],
+        "no-underscore-dangle": 0,
+      "no-plusplus": [
+        "error",
+        {
+          "allowForLoopAfterthoughts": true
+        }
+      ],
+      "no-restricted-syntax": "warn",
+      "class-methods-use-this": "warn"
+    }
+}

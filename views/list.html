@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>证据链模型列表 - 文书可视化工具集</title>
+    <script src="/dist/list.js"></script>
+</head>
+<body>
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <a class="navbar-brand" id="title-head">证据链可视化建模工具集</a>
+        <ul class="nav navbar-nav">
+            <li><a href="/manage" target="_blank">案件列表</a></li>
+            <li class="active"><a href="/index.html?{{caseId}}" target="_blank">证据链关系图</a></li>
+            <li><a href="/logic.html?{{caseId}}" target="_blank">文书说理逻辑图</a></li>
+            <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user}} <span class="caret"></span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+
+    <div>
+        <div class=" list-header">
+            <h2>证据链模型列表</h2>
+            <p>查看证据链模型图</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <ul class="col-md-offset-1 col-md-10 item-list">
+            <li class="header">
+                <div class="identification">id</div>
+                <div class="identification">案由</div>
+                <div class="identification">案号</div>
+                <div class="identification">标题</div>
+                <div class="identification">描述</div>
+            </li>
+            {% for item in evidence %}
+            <li class="item">
+                <div class="identification">{{item.id}}</div>
+                <div class="identification">{{item.caseReason}}&nbsp;</div>
+                <div class="identification">
+                    <a href="./index.html?{{item.id}}">{{item.caseNumber}}&nbsp;</a>
+                </div>
+                <div class="identification">
+                    <a href="./index.html?{{item.id}}">{{item.title}}&nbsp;</a>
+                </div>
+                <div class="identification">{{item.description}}&nbsp;</div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="./new.html" target="_blank" type="button" class="btn btn-default btn-md"
+       style="float:right;margin-right:10%">
+        <span class="glyphicon glyphicon-plus-sign"></span> 创建
+    </a>
+
+    <div>
+        <div class=" list-header">
+            <h2>说理逻辑模型列表</h2>
+            <p>查看说理逻辑模型图</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <ul class="col-md-offset-1 col-md-10 item-list">
+            <li class="header">
+                <div class="title">标题</div>
+                <div class="caseReason">案由</div>
+                <div class="caseNumber">案号</div>
+                <div class="updatedDate">修改日期</div>
+            </li>
+            {% for item in logic %}
+            <li class="item">
+                <div class="title">
+                    <a href="./logic.html?{{item.id}}" target="_blank">{{item.title}}&nbsp;</a>
+                </div>
+                <div class="caseReason">{{item.caseReason}}&nbsp;</div>
+                <div class="caseNumber">{{item.caseNumber}}&nbsp;</div>
+                <div class="updatedDate">{{item.updatedDate}}&nbsp;</div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <a href="./logic-new.html" target="_blank" type="button" class="btn btn-default btn-md"
+       style="float:right;margin-right:10%">
+        <span class="glyphicon glyphicon-plus-sign"></span> 创建
+    </a>
+
+</div>
+
+</body>
+</html>

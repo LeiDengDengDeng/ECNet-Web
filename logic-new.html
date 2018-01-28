@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>新建文书说理逻辑图 - 文书可视化工具集</title>
+    <script>isPageNew = true;</script>
+    <script src="dist/logic.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top no-print">
+    <div class="container">
+        <a class="navbar-brand" href="#">文书可视化工具集</a>
+        <ul class="nav navbar-nav">
+            <li><a href="./index.html" target="_blank">查看证据链关系图</a></li>
+            <li><a href="./new.html" target="_blank">新建证据链关系图</a></li>
+            <li><a href="./logic.html" target="_blank">查看文书说理逻辑图</a></li>
+            <li class="active"><a href="./logic-new.html" target="_blank">新建文书说理逻辑图</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="page-content container10">
+
+    <div class="row">
+        <!--文件选择框以及文件相关操作面板-->
+        <section class="file-wrapper col-md-12 no-print">
+            <span class="posMarker">
+                x: <b id="posX"></b>y<b id="posY"></b>:
+            </span>
+            <span class="file-operation-btns">
+                <a id="line-btn" class="btn btn-primary btn-sm">显示曲线图</a>
+                <a id="print-btn" class="btn btn-default btn-sm">打印此图</a>
+                <a id="revoke-btn" class="btn btn-warning btn-sm disabled">撤销</a>
+                <a id="save-btn" class="btn btn-success btn-sm">保存</a>
+            </span>
+        </section>
+
+        <!--画布-->
+        <section class="graph-wrapper show-bar col-md-9 print">
+            <svg width="2000" height="2000"></svg>
+        </section>
+
+        <!--图元信息-->
+        <section class="node-info-wrapper col-md-3 no-print">
+            <div class="node-panel" style="display: none">
+                <div class="panel-heading">
+                    <h3 class="panel-title">节点信息</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-danger" role="alert" style="display: none"></div>
+                    <div class="form-group">
+                        <label for="panel-id-input">ID</label>
+                        <input type="text" class="form-control" id="panel-id-input" value="" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="panel-topic-input">摘要</label>
+                        <input type="text" class="form-control" id="panel-topic-input" placeholder="请输入摘要" value=""
+                               maxlength="15">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="panel-type-select">类型</label>
+                        <select class="form-control" id="panel-type-select">
+                            <option value="证据">证据</option>
+                            <option value="事实">事实</option>
+                            <option value="法条">法条</option>
+                            <option value="结论">结论</option>
+                            <option value="最终结论">最终结论</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="panel-detail-input">详情</label>
+                        <textarea class="form-control" id="panel-detail-input" placeholder="请输入详情" rows="6"
+                                  maxlength="300"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="panel-leadTo-select">指向</label>
+                        <select class="form-control" id="panel-leadTo-select"></select>
+                    </div>
+                    <button id="panel-del-btn" class="btn btn-danger btn-sm" data-toggle="modal"
+                            data-target="#node-del-modal">删除节点
+                    </button>
+                    <button id="panel-add-btn" class="btn btn-warning btn-sm" data-toggle="modal"
+                            data-target="#node-add-modal">添加子节点
+                    </button>
+                    <button id="panel-save-btn" class="btn btn-success btn-sm">保存信息</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="node-table-wrapper col-md-12 no-print">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="graph-title-input">标题</label>
+                    <input type="text" class="form-control" id="graph-title-input" placeholder="请输入标题" maxlength="128">
+                </div>
+                <table class="table table-bordered col-md-12">
+                    <thead>
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="18%">摘要</th>
+                        <th width="10%">类型</th>
+                        <th width="35%">详情</th>
+                        <th width="20%">指向</th>
+                        <th width="12%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!--modals-->
+<!--删除modal-->
+<div class="modal fade" id="node-del-modal" tabindex="-1" role="dialog" aria-labelledby="node-del-modal-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="node-del-modal-title">删除节点</h4>
+            </div>
+            <div class="modal-body">
+                <h5>你确定要删除这个节点吗？注意：删除根结点将清空整个图像</h5>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="20%">摘要</th>
+                        <th width="10%">类型</th>
+                        <th width="45%">详情</th>
+                        <th width="20%">指向</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <td class="del-id-td"></td>
+                    <td class="del-topic-td"></td>
+                    <td class="del-type-td"></td>
+                    <td class="del-detail-td"></td>
+                    <td class="del-leadTo-td"></td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="node-del-btn">删除节点，子节点连接到上级</button>
+                <button type="button" class="btn btn-danger" id="node-delWithChildren-btn">删除节点及子节点</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--新增modal-->
+<div class="modal fade" id="node-add-modal" tabindex="-1" role="dialog" aria-labelledby="node-add-modal-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="node-add-modal-title">添加节点</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert"></div>
+                <div class="form-group">
+                    <label for="node-add-topic-input">摘要</label>
+                    <input type="text" class="form-control" id="node-add-topic-input" placeholder="请输入摘要" value=""
+                           maxlength="15">
+                </div>
+                <div class="form-group">
+                    <label for="node-add-type-select">类型</label>
+                    <select class="form-control" id="node-add-type-select">
+                        <option value="证据">证据</option>
+                        <option value="事实">事实</option>
+                        <option value="法条">法条</option>
+                        <option value="结论">结论</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="node-add-detail-input">详情</label>
+                    <textarea class="form-control" id="node-add-detail-input" placeholder="请输入详情" rows="6"
+                              maxlength="300"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="node-add-leadTo-select">指向</label>
+                    <select class="form-control" id="node-add-leadTo-select"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="node-add-btn">添加节点</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--编辑modal-->
+<div class="modal fade" id="node-edit-modal" tabindex="-1" role="dialog" aria-labelledby="node-edit-modal-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="node-edit-modal-title">编辑节点</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert"></div>
+                <div class="form-group">
+                    <label for="node-edit-id-input">ID</label>
+                    <input type="text" class="form-control" id="node-edit-id-input" value="" disabled/>
+                </div>
+                <div class="form-group">
+                    <label for="node-edit-topic-input">摘要</label>
+                    <input type="text" class="form-control" id="node-edit-topic-input" placeholder="请输入摘要" value=""
+                           maxlength="15">
+                </div>
+                <div class="form-group">
+                    <label for="node-edit-type-select">类型</label>
+                    <select class="form-control" id="node-edit-type-select">
+                        <option value="证据">证据</option>
+                        <option value="事实">事实</option>
+                        <option value="法条">法条</option>
+                        <option value="结论">结论</option>
+                        <option value="最终结论">最终结论</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="node-edit-detail-input">详情</label>
+                    <textarea class="form-control" id="node-edit-detail-input" placeholder="请输入详情" rows="6"
+                              maxlength="300"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="node-edit-leadTo-select">指向</label>
+                    <select class="form-control" id="node-edit-leadTo-select"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="node-edit-btn">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

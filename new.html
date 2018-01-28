@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>新建证据链关系图 - 文书可视化工具集</title>
+    <script src="dist/new.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">文书可视化工具集</a>
+        <ul class="nav navbar-nav">
+            <li><a href="./list.html" target="_blank">证据链模型列表</a></li>
+            <li><a href="./index.html" target="_blank">查看证据链关系图</a></li>
+            <li class="active"><a href="./new.html" target="_blank">新建证据链关系图</a></li>
+            <li><a href="./logic.html" target="_blank">查看文书说理逻辑图</a></li>
+            <li><a href="./logic-new.html" target="_blank">新建文书说理逻辑图</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="page-content container10">
+
+    <div class="row">
+
+        <!--图元面板-->
+        <section class="graph-primitive-wrapper col-md-4">
+
+            <button id="add-header-btn" class="btn-primary btn-sm btn" title="证据链头是两个相互印证的证据链节中一证据被他证据相印证的部分。">链头</button>
+            <button id="add-body-btn" class="btn-primary btn-sm btn" title="证据链体是指证据链节中, 除证据链头之外的证据链节的主体部分。">链体</button>
+            <button id="add-arrow-btn"  class="btn-primary btn-sm btn">箭头</button>
+            <button id="add-joint-btn"  class="btn-primary btn-sm btn" title="所谓证据联结点, 简而言之, 就是案件中作为证据链节表现形式的证据与证据之间相互印证的地方。">连接点</button>
+
+            <!--拖拽容器-->
+            <div id="dragBox" class="floor10">
+
+            </div>
+        </section>
+
+        <!--绘图相关操作面板-->
+        <section class="graph-tools-wrapper col-md-8">
+            <a id="save-btn" class="btn btn-success btn-sm">保存</a>
+            <a id="revoke-btn" class="btn btn-warning btn-sm">撤销</a>
+            <a id="print-btn" class="btn btn-info btn-sm">打印此图</a>
+            <a id="layout-btn" class="btn btn-default btn-sm">自动排版</a>
+        </section>
+
+        <!--证据链集图-->
+        <section class="graph-wrapper col-md-9 show-bar">
+
+        </section>
+
+        <!--图元信息面板-->
+        <section class="graph-info-wrapper col-md-3">
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseECM">
+                            证据链信息
+                        </a>
+                    </h4>
+                </div>
+
+
+                <div id="collapseECM" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="ecm-caseReason">案由</label>
+                                <input id="ecm-caseReason" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="ecm-caseNumber">案号</label>
+                                <input id="ecm-caseNumber" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="ecm-title">标题</label>
+                                <input id="ecm-title" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="ecm-desc">简介</label>
+                                <textarea id="ecm-desc" class="form-control" rows="5"></textarea>
+                            </div>
+                        </form>
+
+                        <div class="pull-right">
+                            <button id="ecm-save-btn" class="btn btn-success btn-sm">保存</button>
+                            <button id="ecm-reset-btn" class="btn btn-warning btn-sm">重置</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="panel panel-default" id="body-panel" hidden>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseBody">
+                            链体
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseBody" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <form id="bodyForm">
+                            <div class="form-group">
+                                <label for="body-name">证据名称</label>
+                                <input class="form-control" id="body-name"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="body-evidenceType">证据类型</label>
+                                <input class="form-control" id="body-evidenceType"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="body-committer">提交人</label>
+                                <input class="form-control" id="body-committer"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="body-evidenceReason">质证理由</label>
+                                <input class="form-control" id="body-evidenceReason"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="body-evidenceConclusion">质证结论</label>
+                                <input class="form-control" id="body-evidenceConclusion"/>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="body-content">证据明细</label>
+                                <textarea class="form-control" rows="5" id="body-content"></textarea>
+                            </div>
+
+                        </form>
+
+                        <div class="pull-right">
+                            <button id="body-save-btn" class="btn btn-success btn-sm">保存</button>
+                            <button id="body-reset-btn" class="btn btn-warning btn-sm">重置</button>
+                            <button id="body-del-btn" class="btn btn-danger btn-sm">删除图元</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="panel panel-default" id="head-panel" hidden>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseHead">
+                            链头
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseHead" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <form id="headForm">
+                            <div class="form-group">
+                                <label for="head-name">链头名称</label>
+                                <input class="form-control" id="head-name"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="head-keySentence">关键文本</label>
+                                <input class="form-control" id="head-keySentence"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="head-content">链头内容</label>
+                                <textarea class="form-control" rows="5" id="head-content"></textarea>
+                            </div>
+
+                        </form>
+
+                        <div class="pull-right">
+                            <button id="head-save-btn" class="btn btn-success btn-sm">保存</button>
+                            <button id="head-reset-btn" class="btn btn-warning btn-sm">重置</button>
+                            <button id="head-del-btn" class="btn btn-danger btn-sm">删除图元</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" id="arrow-panel" hidden>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseArrow">
+                            箭头
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseArrow" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <form id="arrowForm">
+                            <div class="form-group">
+                                <label for="arrow-name">箭头标题</label>
+                                <input class="form-control" id="arrow-name"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="arrow-content">箭头简介</label>
+                                <input class="form-control" id="arrow-content"/>
+                            </div>
+                        </form>
+
+                        <div class="pull-right">
+                            <button id="arrow-save-btn" class="btn btn-success btn-sm">保存</button>
+                            <button id="arrow-reset-btn" class="btn btn-warning btn-sm">重置</button>
+                            <button id="arrow-del-btn" class="btn btn-danger btn-sm">删除图元</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" id="joint-panel" hidden>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseJoint">
+                            连接点
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseJoint" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <form id="jointForm">
+                            <div class="form-group">
+                                <label for="joint-name">事实名称</label>
+                                <input class="form-control" id="joint-name"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="joint-content">事实类型</label>
+                                <input class="form-control" id="joint-content"/>
+                            </div>
+                        </form>
+
+                        <div class="pull-right">
+                            <button id="joint-save-btn" class="btn btn-success btn-sm">保存</button>
+                            <button id="joint-reset-btn" class="btn btn-warning btn-sm">重置</button>
+                            <button id="joint-del-btn" class="btn btn-danger btn-sm">删除图元</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <section class="graph-info-wrapper col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion"
+                           href="#collapseEvidenceList">
+                            证据清单
+                        </a>
+                    </h4>
+                </div>
+            </div>
+            <div id="collapseEvidenceList" class="panel-collapse collapse">
+                <div class="table-responsive panel-body">
+                    <table id="evidence-table" class="table">
+                        <tr>
+                            <th>证据序号</th>
+                            <th>证据名称</th>
+                            <th>证据明细</th>
+                            <th>证据种类</th>
+                            <th>提交人</th>
+                        </tr>
+                    </table>
+                    <div id="evidence-table-operations" class="pull-right" hidden>
+                        <a id="export-btn" class="btn btn-success">导出为Excel</a>
+                        <div class="pull-right">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapseOne">
+                                事实清单
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</div>
+</body>
+</html>
